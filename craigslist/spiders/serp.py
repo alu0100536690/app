@@ -26,29 +26,30 @@ class DatosSerps(Item):
     busquedas_relacionadas = Field()
 
 class SerpsGoogle(CrawlSpider):
-    name = 'serp'
-
-    pais = "es" #España
-    num_resultados = ""
-    busquedas = []
-    start_urls_semillas = []    
-
+    name = 'serp'  
+    start_urls = []
+    
     
     def __init__(self, *args, **kwargs):
         super(SerpsGoogle, self).__init__(*args, **kwargs)
 
+        pais = "es" #España
+        num_resultados = ""
+        busquedas = []
        
-        self.busquedas.append(str(kwargs['busqueda']))
-        self.num_resultados = str(kwargs['num_resultados_serps'])
+        busquedas.append(kwargs['busqueda'])
+        num_resultados = kwargs['num_resultados_serps']
 
-        print("\n\n\nLOS PARAMETROS DE BUSQUEDA SON:",self.busquedas)
-        print("\n\n\nLOS PARAMETROS NUM RESULTADOS SON:",self.num_resultados)
+        print("\n\n\nLOS PARAMETROS DE BUSQUEDA SON:",busquedas)
+        print("\n\n\nLOS PARAMETROS NUM RESULTADOS SON:",num_resultados)
         
-        for self.busqueda in self.busquedas:
-            self.start_urls_semillas.append('https://www.google.'+self.pais+'/search?q='+self.busqueda+'&num='+self.num_resultados)
+        for busqueda in busquedas:
+            # URL SEMILLA
+            self.start_urls.append('https://www.google.'+pais+'/search?q='+str(busqueda)+'&num='+str(num_resultados))
 
-        # URL SEMILLA
-        self.start_urls = self.start_urls_semillas
+        
+       
+        
     
 
     custom_settings = {
@@ -89,6 +90,7 @@ class SerpsGoogle(CrawlSpider):
 
    
     def parse(self, response):
+        
         data = []        
         title = []
         h1 = []
@@ -102,8 +104,8 @@ class SerpsGoogle(CrawlSpider):
         sel = Selector(response)
         urlSerps = sel.xpath('//*[@id="center_col"]')
         item = ItemLoader(DatosSerps(), urlSerps)
-
-        item.add_xpath('url', '//*[@id="rso"]/div/div/div/div/a/@href')
+                                  
+        item.add_xpath('url', '//*[h3]//parent::a/@href[not(contains(., "https://www.google") or contains(., "/search?"))]')
         item.add_xpath('description', '//*[@id="rso"]/div/div/div/div/span', MapCompose(self.limpiartexto)) 
         item.add_xpath('preguntas_relacionadas', '//g-accordion-expander/descendant::div/text()')
         item.add_xpath('busquedas_relacionadas', '//*[@id="w3bYAd"]/div/div/div/div/a/div[2]', MapCompose(self.limpiartexto))
@@ -141,6 +143,7 @@ class SerpsGoogle(CrawlSpider):
         item.add_value('busquedas_relacionadas',busquedas_relacionadas)
         
         yield item.load_item()
+        
         title = item.get_collected_values('title')
         description = item.get_collected_values('description')
         preguntas_relacionadas = item.get_collected_values('preguntas_relacionadas')
