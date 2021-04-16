@@ -45,7 +45,7 @@ class SerpsGoogle(CrawlSpider):
         
         for busqueda in busquedas:
             # URL SEMILLA
-            self.start_urls.append('https://www.google.'+pais+'/search?q='+str(busqueda)+'&num='+str(num_resultados))
+            self.start_urls.append('https://www.google.com/search?q='+str(busqueda)+'&num='+str(num_resultados)+'&hl='+pais)
 
         
        
