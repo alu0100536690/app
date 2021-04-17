@@ -37,20 +37,24 @@ class SerpsGoogle(CrawlSpider):
         pais = "" #España
         num_resultados = ""
         busquedas = []
-       
+        motor = ""
+
         busquedas.append(kwargs['busqueda'])
         num_resultados = kwargs['num_resultados_serps']
-        #idioma = kwargs['idioma']
-        #pais = kwargs['pais']
-        idioma = "ES"
-        pais = "es"
+        idioma = kwargs['idioma']
+        pais = kwargs['pais']
+        motor = kwargs['motor']
+        
 
         print("\n\n\nLOS PARAMETROS DE BUSQUEDA SON:",busquedas)
         print("\n\n\nLOS PARAMETROS NUM RESULTADOS SON:",num_resultados)
-        
+        print("\n\n\nLOS PARAMETROS PAÍS SON:",pais)
+        print("\n\n\nLOS PARAMETROS IDIOMA SON:",idioma)
+        print("\n\n\nLOS PARAMETROS MOTOR SON:",motor)
+
         for busqueda in busquedas:
             # URL SEMILLA
-            self.start_urls.append('https://www.google.com/search?q='+str(busqueda)+'&num='+str(num_resultados)+'&hl='+str(pais)+'&gl='+str(idioma))
+            self.start_urls.append('https://www.'+str(motor)+'/search?q='+str(busqueda)+'&num='+str(num_resultados)+'&gl='+str(pais)+'&hl='+str(idioma))
 
         
        

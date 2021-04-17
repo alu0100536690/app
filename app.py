@@ -36,18 +36,20 @@ def espiar_competencia():
 def serps():
 	querie = request.form.get("queries")
 	num_serps = request.form.get("num_serps")
-	#pais = request.form.get("pais")
-	#idioma = request.form.get("idioma")
+	pais = request.form.get("pais")
+	idioma = request.form.get("idioma")
+	motor = request.form.get("motor")
 
 	print("Consulta: "+querie)
 	print("Num búsquedas: "+num_serps)
-	#print("País: "+pais) #gl=ES 
-	#print("Idioma: "+idioma) #hl=es
+	print("País: "+pais) #gl=ES 
+	print("Idioma: "+idioma) #hl=es
+	print("Motor: "+motor)
 
 	spider_name = "serp"
 
 	    
-	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'busqueda={querie}', '-a', f'num_resultados_serps={num_serps}'])	
+	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'busqueda={querie}', '-a', f'num_resultados_serps={num_serps}', '-a',  f'motor={motor}', '-a',  f'pais={pais}', '-a',  f'idioma={idioma}'])	
 	
 	return render_template("serps.html", datos=request.form)
 
