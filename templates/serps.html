@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+{% block title %}Análisis SERPs{% endblock %}
+{% block content %}
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+        <title>SERPY - Herramienta para SEO y nichos de AMAZON</title>
+
+        <meta name="description" content="Dashmix - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
+        <meta name="author" content="pixelcave">
+        <meta name="robots" content="noindex, nofollow">
+
+        <!-- Open Graph Meta -->
+        <meta property="og:title" content="Dashmix - Bootstrap 4 Admin Template &amp; UI Framework">
+        <meta property="og:site_name" content="Dashmix">
+        <meta property="og:description" content="Dashmix - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="">
+        <meta property="og:image" content="">
+
+        <!-- Icons -->
+        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+        <link rel="shortcut icon" href="static/media/favicons/favicon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="static/media/favicons/favicon-192x192.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="static/media/favicons/apple-touch-icon-180x180.png">
+        <!-- END Icons -->
+
+        <!-- Stylesheets -->
+        <!-- Fonts and Dashmix framework -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+        <link rel="stylesheet" id="css-main" href="static/css/dashmix.min.css">
+
+        <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+        <!-- <link rel="stylesheet" id="css-theme" href="static/css/themes/xwork.min.css"> -->
+        <!-- END Stylesheets -->
+    </head>
+    <body>
+        <!-- Page Container -->
+        <!--
+            Available classes for #page-container:
+
+        GENERIC
+
+            'enable-cookies'                            Remembers active color theme between pages (when set through color theme helper Template._uiHandleTheme())
+
+        SIDEBAR & SIDE OVERLAY
+
+            'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
+            'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
+            'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
+            'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
+            'sidebar-dark'                              Dark themed sidebar
+
+            'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
+            'side-overlay-o'                            Visible Side Overlay by default
+
+            'enable-page-overlay'                       Enables a visible clickable Page Overlay (closes Side Overlay on click) when Side Overlay opens
+
+            'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
+
+        HEADER
+
+            ''                                          Static Header if no class is added
+            'page-header-fixed'                         Fixed Header
+
+
+        Footer
+
+            ''                                          Static Footer if no class is added
+            'page-footer-fixed'                         Fixed Footer (please have in mind that the footer has a specific height when is fixed)
+
+        HEADER STYLE
+
+            ''                                          Classic Header style if no class is added
+            'page-header-dark'                          Dark themed Header
+            'page-header-glass'                         Light themed Header with transparency by default
+                                                        (absolute position, perfect for light images underneath - solid light background on scroll if the Header is also set as fixed)
+            'page-header-glass page-header-dark'         Dark themed Header with transparency by default
+                                                        (absolute position, perfect for dark images underneath - solid dark background on scroll if the Header is also set as fixed)
+
+        MAIN CONTENT LAYOUT
+
+            ''                                          Full width Main Content if no class is added
+            'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
+            'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
+        -->
+        <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
+
+
+            <!-- Sidebar -->
+            <!--
+                Sidebar Mini Mode - Display Helper classes
+
+                Adding 'smini-hide' class to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+                Adding 'smini-show' class to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+                    If you would like to disable the transition animation, make sure to also add the 'no-transition' class to your element
+
+                Adding 'smini-hidden' to an element will hide it when the sidebar is in mini mode
+                Adding 'smini-visible' to an element will show it (display: inline-block) only when the sidebar is in mini mode
+                Adding 'smini-visible-block' to an element will show it (display: block) only when the sidebar is in mini mode
+            -->
+            <nav id="sidebar" aria-label="Main Navigation">
+                <!-- Side Header -->
+                <div class="bg-header-dark">
+                    <div class="content-header bg-white-10">
+                        <!-- Logo -->
+                        <a class="font-w600 text-white tracking-wide" href="/">
+                            <span class="smini-visible">
+                                D<span class="opacity-75">x</span>
+                            </span>
+                            <span class="smini-hidden">
+                                SER<span class="opacity-75">PY</span>
+                            </span>- SEO NICHOS
+                        </a>
+                        <!-- END Logo -->
+
+                    </div>
+                </div>
+                <!-- END Side Header -->
+
+                <!-- Sidebar Scrolling -->
+                <div class="js-sidebar-scroll">
+                    <!-- Side Navigation -->
+                    <div class="content-side">
+                        <ul class="nav-main">
+
+
+                            <li class="nav-main-heading">SERPS GOOGLE</li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="espiar-competencia">
+                                    <i class="nav-main-link-icon fas fa-binoculars"></i>
+                                    <span class="nav-main-link-name">Espiar competencia</span>
+                                    
+                                </a>
+                            </li>
+
+
+
+                            <li class="nav-main-heading">AMAZON AFILIADOS</li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                                    <i class="nav-main-link-icon fas fa-shopping-basket"></i>
+                                    <span class="nav-main-link-name">Productos</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="be_ui_icons">
+                                            <span class="nav-main-link-name">Listado de ASINs</span>                                          
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link" href="be_ui_grid">
+                                            <span class="nav-main-link-name">Datos de un producto</span>
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- END Side Navigation -->
+                </div>
+                <!-- END Sidebar Scrolling -->
+            </nav>
+            <!-- END Sidebar -->
+
+            <!-- Header -->
+            <header id="page-header">
+                <!-- Header Content -->
+                <div class="content-header">
+                    <!-- Left Section -->
+                    <div>
+                        <!-- Toggle Sidebar -->
+                        <!-- Layout API, functionality initialized in Template._uiApiLayout()-->
+                        <button type="button" class="btn btn-dual" data-toggle="layout" data-action="sidebar_toggle">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+                        <!-- END Toggle Sidebar -->
+
+
+                    </div>
+                    <!-- END Left Section -->
+
+                    <!-- Right Section -->
+                    <div>
+
+
+                    </div>
+                    <!-- END Right Section -->
+                </div>
+                <!-- END Header Content -->
+
+                <!-- Header Search -->
+                <div id="page-header-search" class="overlay-header bg-header-dark">
+                    <div class="bg-white-10">
+                        <div class="content-header">
+                            <form class="w-100" action="be_pages_generic_search" method="POST">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                                        <button type="button" class="btn btn-alt-primary" data-toggle="layout" data-action="header_search_off">
+                                            <i class="fa fa-fw fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control border-0" placeholder="Search or hit ESC.." id="page-header-search-input" name="page-header-search-input">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Header Search -->
+
+                <!-- Header Loader -->
+                <!-- Please check out the Loaders page under Components category to see examples of showing/hiding it -->
+                <div id="page-header-loader" class="overlay-header bg-header-dark">
+                    <div class="bg-white-10">
+                        <div class="content-header">
+                            <div class="w-100 text-center">
+                                <i class="fa fa-fw fa-sun fa-spin text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Header Loader -->
+            </header>
+            <!-- END Header -->
+
+            <!-- Main Container -->
+            <main id="main-container">
+                <!-- Hero -->
+                <div class="bg-body-light">
+                    <div class="content content-full">
+                        <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+                            <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Página de inicio</h1>
+
+
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+                           
+                            <p>
+                                Esta es la página principal...
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- END Hero -->
+
+                <!-- Page Content -->
+                <div class="content">
+
+                    Hola...
+                    <div id="menu1" class="tab-pane in active">
+                        <div class="row justify-content-center">
+                            <div class="col-11">
+                                <div class="form-card">                                            
+                                    <form action="/serps" method="post">
+                                    
+
+                                        <div class="row">
+
+                                            <div class="mt-4 col-md-5 offset-md-1 btn btn-secondary" role="button"> <a href="{{ url_for('download_file') }}" style="color:#FFF;">Descargar fichero excel</a> </div>
+                                            <div class="mt-4 col-md-5 offset-md-1 btn btn-success" role="button"> <a href="{{ url_for('espiar_competencia') }}" style="color:#FFF;">Realizar nueva búsqueda</a> </div>
+                                           
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END Page Content -->
+            </main>
+            <!-- END Main Container -->
+
+            <!-- Footer -->
+            <footer id="page-footer" class="bg-body-light">
+                <div class="content py-0">
+                    <div class="row font-size-sm">
+                        <div class="col-sm-6 order-sm-2 mb-1 mb-sm-0 text-center text-sm-right">
+                            Creado con <i class="fa fa-heart text-danger"></i> por <a class="font-w600" href="https://videocursosweb.com" target="_blank">Video Cursos WEB</a>
+                        </div>
+                        <div class="col-sm-6 order-sm-1 text-center text-sm-left">
+                            <a class="font-w600" href="https://serpy.videocursosweb.com" target="_blank">SERPY</a> &copy; <span data-toggle="year-copy"></span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- END Footer -->
+        </div>
+        <!-- END Page Container -->
+
+        <!--
+            Dashmix JS Core
+
+            Vital libraries and plugins used in all pages. You can choose to not include this file if you would like
+            to handle those dependencies through webpack. Please check out static/_js/main/bootstrap.js for more info.
+
+            If you like, you could also include them separately directly from the static/js/core folder in the following
+            order. That can come in handy if you would like to include a few of them (eg jQuery) from a CDN.
+
+            static/js/core/jquery.min.js
+            static/js/core/bootstrap.bundle.min.js
+            static/js/core/simplebar.min.js
+            static/js/core/jquery-scrollLock.min.js
+            static/js/core/jquery.appear.min.js
+            static/js/core/js.cookie.min.js
+        -->
+        <script src="static/js/dashmix.core.min.js"></script>
+
+        <!--
+            Dashmix JS
+
+            Custom functionality including Blocks/Layout API as well as other vital and optional helpers
+            webpack is putting everything together at static/_js/main/app.js
+        -->
+        <script src="static/js/dashmix.app.min.js"></script>
+    </body>
+</html>
+{% endblock %}

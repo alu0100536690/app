@@ -33,19 +33,24 @@ class SerpsGoogle(CrawlSpider):
     def __init__(self, *args, **kwargs):
         super(SerpsGoogle, self).__init__(*args, **kwargs)
 
-        pais = "es" #España
+        idioma = ""
+        pais = "" #España
         num_resultados = ""
         busquedas = []
        
         busquedas.append(kwargs['busqueda'])
         num_resultados = kwargs['num_resultados_serps']
+        #idioma = kwargs['idioma']
+        #pais = kwargs['pais']
+        idioma = "ES"
+        pais = "es"
 
         print("\n\n\nLOS PARAMETROS DE BUSQUEDA SON:",busquedas)
         print("\n\n\nLOS PARAMETROS NUM RESULTADOS SON:",num_resultados)
         
         for busqueda in busquedas:
             # URL SEMILLA
-            self.start_urls.append('https://www.google.com/search?q='+str(busqueda)+'&num='+str(num_resultados)+'&hl='+pais)
+            self.start_urls.append('https://www.google.com/search?q='+str(busqueda)+'&num='+str(num_resultados)+'&hl='+str(pais)+'&gl='+str(idioma))
 
         
        
@@ -166,7 +171,7 @@ class SerpsGoogle(CrawlSpider):
         df = pd.DataFrame.from_dict(data, orient='index')
         df = df.transpose()		
         #df = pd.DataFrame(data)
-        df.to_excel("serp.xlsx")
+        df.to_excel("file.xlsx")
         #print("\n\n LA TABLA ES: ", df)
 
 

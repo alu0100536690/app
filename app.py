@@ -14,37 +14,56 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 queries = []
 querie = ""
 
-@app.route('/')
-def upload_form():
-	return render_template('formulario.html')
+@app.route('/',methods=["GET"])
+def inicio():
+	
+	return render_template("index.html")
+
+
+@app.route('/espiar-competencia')
+def upload_form():	
+	return render_template("espiar-competencia.html")
+
+
+
+@app.route('/espiar-competencia',methods=["GET"])
+def espiar_competencia():
+	return render_template('espiar-competencia.html')
+	
+
+
+@app.route("/serps", methods=["post"]) #Ejecuta la araña google serps
+def serps():
+	querie = request.form.get("queries")
+	num_serps = request.form.get("num_serps")
+	#pais = request.form.get("pais")
+	#idioma = request.form.get("idioma")
+
+	print("Consulta: "+querie)
+	print("Num búsquedas: "+num_serps)
+	#print("País: "+pais) #gl=ES 
+	#print("Idioma: "+idioma) #hl=es
+
+	spider_name = "serp"
+
+	    
+	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'busqueda={querie}', '-a', f'num_resultados_serps={num_serps}'])	
+	
+	return render_template("serps.html", datos=request.form)
+
 
 @app.route('/download')
 def download_file():
 	
-	path = "serp.xlsx"	
+	path = "file.xlsx"	
 	return send_file(path, as_attachment=True)
 	
-	
-@app.route('/',methods=["GET"])
-def inicio():
-	
-	return render_template("formulario.html")
 
-@app.route("/", methods=["post"])
 
-def procesar_formulario():
-	querie = request.form.get("queries")
-	num_serps = request.form.get("num_serps")
 
-	print("Consulta: "+querie)
-	print("Num búsquedas: "+num_serps)
 
-	spider_name = "serp"
-	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'busqueda={querie}', '-a', f'num_resultados_serps={num_serps}'])	
-	#subprocess.check_output(['crawl', spider_name, '-a', f'busquedas={querie}', '-a', f'num_resultados={num_serps}' ]) 
-	return render_template("datos.html", datos=request.form)
 
-	
+
 
 
 if __name__ == '__main__':

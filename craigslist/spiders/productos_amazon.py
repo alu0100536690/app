@@ -7,6 +7,10 @@ from scrapy.loader.processors import MapCompose
 from scrapy.loader import ItemLoader
 import re
 
+import pandas as pd
+from openpyxl import Workbook
+from openpyxl.writer.excel import save_virtual_workbook
+
 
 
 # ABSTRACCION DE DATOS A EXTRAER - DETERMINA LOS DATOS QUE TENGO QUE LLENAR Y QUE ESTARAN EN EL ARCHIVO GENERADO
@@ -57,19 +61,19 @@ class StackOverflowSpider(Spider):
     
     def parse(self, response):
         # Selectores: Clase de scrapy para extraer datos
-             
-        sel = Selector(response) 
+        imagen = []
+        marca = []
 
+
+        sel = Selector(response)
         producto = sel.xpath('//*[@id="ppd"]')
 
-        
-        imagen = re.search('"large":"(.*?)"',response.text).groups()[0]
-        marca = sel.xpath('//span[normalize-space()="Marca"]/following::span/text()').extract_first()
+
 
         item = ItemLoader(DetalleProducto(), producto)
             
-        item.add_value('image', imagen)
-        item.add_value('marca', marca)
+        item.add_value('image', re.search('"large":"(.*?)"',response.text).groups()[0])
+        item.add_value('marca', sel.xpath('//span[normalize-space()="Marca"]/following::span/text()').extract_first())
         item.add_xpath('titulo_producto','.//*[@id="productTitle"]/text()', MapCompose(self.quitarsaltolinea))
         item.add_xpath('precio','.//*[@id="priceblock_ourprice"]/text()', MapCompose(self.quitarsaltolinea))
         item.add_xpath('precio_caro', './/*[@class="priceBlockStrikePriceString a-text-strike"]/text()', MapCompose(self.quitarsaltolinea))
@@ -78,6 +82,22 @@ class StackOverflowSpider(Spider):
         item.add_xpath('descripcion', './/*[@id="feature-bullets"]//*[@class="a-list-item"]/text()', MapCompose(self.quitarsaltolinea))
 
         yield item.load_item()
+
+        imagen = item.get_collected_values('image')
+        marca = item.get_collected_values('marca')
+
+
+        print("Importando datos...")    
+		
+        data = {
+            'Imagen': imagen,
+            'Marca': marca
+        }
+
+        df = pd.DataFrame.from_dict(data, orient='index')
+        df = df.transpose()		
+        #df = pd.DataFrame(data)
+        df.to_excel("file.xlsx")
             
 
         
