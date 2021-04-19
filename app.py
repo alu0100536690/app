@@ -20,23 +20,23 @@ def inicio():
 	return render_template("index.html")
 
 
-#@app.route('/espiar-competencia')
-#def upload_form():	
-	#return render_template("espiar-competencia.html")
+@app.route('/espiar-competencia')
+def upload_form():	
+	return render_template("espiar-competencia.html")
+
 
 
 @app.route('/espiar-competencia',methods=["GET"])
-def upload_form():
+def espiar_competencia():
 	return render_template('espiar-competencia.html')
-
+	
 
 @app.route('/descargar-productos-lista-asin',methods=["GET"])
 def descargar_productos_lista_asin():
 	return render_template('descargar-productos-lista-asin.html')
-	
 
 
-@app.route("/serps", methods=["post"]) #Ejecuta la araña google serps
+@app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
 def serps():
 	querie = request.form.get("queries")
 	num_serps = request.form.get("num_serps")
@@ -50,12 +50,13 @@ def serps():
 	print("Idioma: "+idioma) #hl=es
 	print("Motor: "+motor)
 
+
 	spider_name = "serp"
 
 	    
 	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'busqueda={querie}', '-a', f'num_resultados_serps={num_serps}', '-a',  f'motor={motor}', '-a',  f'pais={pais}', '-a',  f'idioma={idioma}'])	
 	
-	return render_template("serps.html", datos=request.form)
+	return render_template("obtener-datos.html", datos=request.form)
 
 
 @app.route('/download')

@@ -244,14 +244,14 @@
                 <div class="bg-body-light">
                     <div class="content content-full">
                         <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-                            <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Página de inicio</h1>
+                            <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">OBTENER DATOS </h1>
 
 
                         </div>
                         <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
                            
                             <p>
-                                Esta es la página principal...
+                                Haga clic en el botón <strong>descargar fichero excel</strong> para obtener los datos o <strong>Realizar nueva búsqueda</strong> para comenzar de nuevo. 
                             </p>
 
                         </div>
@@ -262,18 +262,18 @@
                 <!-- Page Content -->
                 <div class="content">
 
-                    Hola...
+                    
                     <div id="menu1" class="tab-pane in active">
                         <div class="row justify-content-center">
                             <div class="col-11">
                                 <div class="form-card">                                            
-                                    <form action="/serps" method="post">
+                                    <form action="/obtener-datos" method="post">
                                     
 
                                         <div class="row">
 
                                             <div class="mt-4 col-md-5 offset-md-1 btn btn-secondary" role="button"> <a href="{{ url_for('download_file') }}" style="color:#FFF;">Descargar fichero excel</a> </div>
-                                            <div class="mt-4 col-md-5 offset-md-1 btn btn-success" role="button"> <a href="{{ url_for('espiar_competencia') }}" style="color:#FFF;">Realizar nueva búsqueda</a> </div>
+                                            <div class="mt-4 col-md-5 offset-md-1 btn btn-success" role="button"> <a href="{{ url_for('inicio') }}" style="color:#FFF;">Realizar otra operación</a> </div>
                                            
                                         </div>
 
