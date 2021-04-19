@@ -21,6 +21,19 @@ USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
+
+FEED_EXPORT_ENCODING= 'utf-8' #Escribe caracteres especiales del español
+
+# Bajar la velocidad para no ser baneado
+DOWNLOAD_TIMEOUT = 450
+DOWNLOAD_DELAY = 4
+DEPTH_LIMIT = 10
+EXTENSIONS = {
+    'scrapy.extensions.telnet.TelnetConsole': None,
+    'scrapy.extensions.closespider.CloseSpider': 1
+}
+#FIN Bajar la velocidad para no ser baneado
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
