@@ -20,15 +20,19 @@ def inicio():
 	return render_template("index.html")
 
 
-@app.route('/espiar-competencia')
-def upload_form():	
-	return render_template("espiar-competencia.html")
-
+#@app.route('/espiar-competencia')
+#def upload_form():	
+	#return render_template("espiar-competencia.html")
 
 
 @app.route('/espiar-competencia',methods=["GET"])
-def espiar_competencia():
+def upload_form():
 	return render_template('espiar-competencia.html')
+
+
+@app.route('/descargar-productos-lista-asin',methods=["GET"])
+def descargar_productos_lista_asin():
+	return render_template('descargar-productos-lista-asin.html')
 	
 
 
