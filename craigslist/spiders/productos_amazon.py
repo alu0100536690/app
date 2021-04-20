@@ -36,23 +36,27 @@ class DetalleProducto(Item):
 # CLASE CORE - SPIDER
 class StackOverflowSpider(Spider):
     name = "productos_amazon" # nombre, puede ser cualquiera 
-    
-    # Forma de configurar el USER AGENT en scrapy
+    start_urls = []
+
+
+    def __init__(self, *args, **kwargs):
+        super(StackOverflowSpider, self).__init__(*args, **kwargs)
+
+        #asins = ["B000MWR59A", "B01ELDCSHY","B07PXTB77V"]
+        pais = "es" #España
+        asins = []
+        asin = kwargs['asins']
+        asins = re.split(', |,|; |;', asin)
+
+
+        for asn in asins:
+            # URL SEMILLA
+            self.start_urls.append('https://www.amazon.'+pais+'/dp/'+asn)
+
     custom_settings = {
         'USER_AGENT': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/71.0.3578.80 Chrome/71.0.3578.80 Safari/537.36'
     }    
-    
-    
-    pais = "es" #España
-    asins = ["B000MWR59A", "B01ELDCSHY","B07PXTB77V"]
-    start_urls_semillas = []
 
-    for asin in asins:
-        start_urls_semillas.append('https://www.amazon.'+pais+'/dp/'+asin)
-    print("ASIN DE PRODUCTOS: ",start_urls_semillas)    
-   
-    # URL SEMILLA
-    start_urls = start_urls_semillas
 
 
     

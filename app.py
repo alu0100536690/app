@@ -32,8 +32,17 @@ def espiar_competencia():
 	
 
 @app.route('/descargar-productos-lista-asin',methods=["GET"])
-def descargar_productos_lista_asin():
+def productos_lista_asin():
 	return render_template('descargar-productos-lista-asin.html')
+
+
+
+@app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
+def descargar_productos_lista_asin():
+	asins = request.form.get("asins")
+	spider_name = "productos_amazon"	    
+	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'asins={asins}'])	
+	return render_template("obtener-datos.html", datos=request.form)
 
 
 @app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
