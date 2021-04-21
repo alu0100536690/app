@@ -54,14 +54,35 @@ class StackOverflowSpider(Spider):
             self.start_urls.append('https://www.amazon.'+pais+'/dp/'+asn)
 
     custom_settings = {
-        'USER_AGENT': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/71.0.3578.80 Chrome/71.0.3578.80 Safari/537.36'
-    }    
+ 
+        "DOWNLOADER_MIDDLEWARES":{ #Necesito instalar la librería -> pip3 install Scrapy-UserAgents para rotar users agents automaticamente.
+            'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+            'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500,
+        },
 
+        "USER_AGENTS": [
+            ('Mozilla/5.0 (X11; Linux x86_64) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/57.0.2987.110 '
+            'Safari/537.36'),  # chrome
+            ('Mozilla/5.0 (X11; Linux x86_64) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/61.0.3163.79 '
+            'Safari/537.36'),  # chrome
+            ('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) '
+            'Gecko/20100101 '
+            'Firefox/55.0')  # firefox
+        ]
+
+    }
+
+
+    download_delay = 1
 
 
     
     def quitarsaltolinea(self, texto):
-        nuevoTexto = texto.replace("\n", "").replace("€", "")
+        nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "")
         return nuevoTexto
 
     #Funcion que se va a llamar cuando se haga el requerimiento a la URL semilla
@@ -83,43 +104,103 @@ class StackOverflowSpider(Spider):
 
         item = ItemLoader(DetalleProducto(), producto)
         
-        def check_exists_by_xpath(xpath): 
+        def check_exists_by_xpath(xpath):
             
-            if(str(xpath) != "None"): #Si el producto tiene el precio rebajado               
-                #precio_caro.append(xpath)
+            if((str(xpath) != "None") or (str(xpath) == "")): #Si el producto tiene el precio rebajado
                 return xpath         
 
             else:
-                #precio_caro.append("")
                 xpath = ""
                 return xpath
                           
    
-        
-        item.add_value('image', re.search('"large":"(.*?)"',response.text).groups()[0])
-        item.add_value('marca', producto.xpath('//span[normalize-space()="Marca"]/following::span/text()').extract_first())
-        item.add_xpath('titulo_producto','.//*[@id="productTitle"]/text()', MapCompose(self.quitarsaltolinea))
-        item.add_xpath('precio','.//*[@id="priceblock_ourprice"]/text()', MapCompose(self.quitarsaltolinea))
 
-        valorprecio_caro = producto.xpath('.//*[@class="priceBlockStrikePriceString a-text-strike"]/text()').extract_first()
-        item.add_value('precio_caro', check_exists_by_xpath(valorprecio_caro), MapCompose(self.quitarsaltolinea)) #si devuelve "None" lo cambio por "" y sino devuelvo el valor del precio.
+        try:
+            item.add_value('image', check_exists_by_xpath(re.search('"large":"(.*?)"',response.text).groups()[0]))
+        except:
+            item.add_value('image', '')
 
-        item.add_xpath('num_reviews','.//*[@id="acrCustomerReviewText"]/text()')
-        item.add_xpath('estrellas', './/*[@id="acrPopover"]/@title')
-        item.add_xpath('descripcion', './/*[@id="feature-bullets"]//*[@class="a-list-item"]/text()', MapCompose(self.quitarsaltolinea))
+        try:
+            item.add_value('marca', check_exists_by_xpath(producto.xpath('//span[normalize-space()="Marca"]/following::span/text()').extract_first()))
+        except:
+            item.add_value('marca', '')
+
+        try:
+            item.add_xpath('titulo_producto',check_exists_by_xpath('.//*[@id="productTitle"]/text()'), MapCompose(self.quitarsaltolinea))
+        except:
+            item.add_xpath('titulo_producto','')
+
+        try:
+            item.add_xpath('precio',check_exists_by_xpath('.//*[@id="priceblock_ourprice"]/text()'), MapCompose(self.quitarsaltolinea))
+        except:
+            item.add_xpath('precio','')
+
+        try:
+            item.add_value('precio_caro', check_exists_by_xpath(producto.xpath('.//*[@class="priceBlockStrikePriceString a-text-strike"]/text()').extract_first()), MapCompose(self.quitarsaltolinea)) #si devuelve "None" lo cambio por "" y sino devuelvo el valor del precio.
+        except:
+            item.add_value('precio_caro', '')
+
+        try:
+            item.add_xpath('num_reviews',check_exists_by_xpath('.//*[@id="acrCustomerReviewText"]/text()'), MapCompose(self.quitarsaltolinea))
+        except:
+            item.add_xpath('num_reviews','')
+
+        try:
+            item.add_xpath('estrellas', check_exists_by_xpath('.//*[@id="acrPopover"]/@title'))
+        except:
+            item.add_xpath('estrellas', '')
+
+        try:
+            item.add_xpath('descripcion', check_exists_by_xpath('.//*[@id="feature-bullets"]//*[@class="a-list-item"]/text()'), MapCompose(self.quitarsaltolinea))
+        except:
+            item.add_xpath('descripcion', '')
+
+     
 
         yield item.load_item()
 
 
+        try:
+            imagen.append(item.get_collected_values('image')[0])
+        except:
+            imagen.append("")
 
-        imagen.append(item.get_collected_values('image')[0])
-        marca.append(item.get_collected_values('marca')[0])        
-        titulo_producto.append(item.get_collected_values('titulo_producto')[0])
-        precio.append(item.get_collected_values('precio')[0])
-        precio_caro.append(item.get_collected_values('precio_caro')[0])       
-        num_reviews.append(item.get_collected_values('num_reviews')[0])
-        estrellas.append(item.get_collected_values('estrellas')[0])
-        descripcion.append(item.get_collected_values('descripcion')[0])
+        try:
+            marca.append(item.get_collected_values('marca')[0])
+        except:
+            marca.append("")
+
+        try:
+            titulo_producto.append(item.get_collected_values('titulo_producto')[0])
+        except:
+            titulo_producto.append("")
+
+        try:
+            precio.append(item.get_collected_values('precio')[0])
+        except:
+            precio.append("")
+
+        try:
+            precio_caro.append(item.get_collected_values('precio_caro')[0])
+        except:
+            precio_caro.append("")
+      
+        try:
+            num_reviews.append(item.get_collected_values('num_reviews')[0])
+        except:
+            num_reviews.append("")
+
+        try:
+            estrellas.append(item.get_collected_values('estrellas')[0])
+        except:
+            estrellas.append("")
+
+        try:
+            descripcion.append(item.get_collected_values('descripcion')[0])
+        except:
+            descripcion.append("")        
+        
+        
 
         print("Importando datos...")    
 		

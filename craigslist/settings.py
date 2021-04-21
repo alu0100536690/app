@@ -24,10 +24,18 @@ ROBOTSTXT_OBEY = False
 
 FEED_EXPORT_ENCODING= 'utf-8' #Escribe caracteres especiales del español
 
+
 # Bajar la velocidad para no ser baneado
-DOWNLOAD_TIMEOUT = 450
-DOWNLOAD_DELAY = 4
+CONCURRENT_REQUESTS = 64
+CONCURRENT_REQUESTS_PER_DOMAIN = 3
+DNS_TIMEOUT = 120
+DOWNLOAD_DELAY = 2
+DOWNLOAD_TIMEOUT = 350
+RANDOMIZE_DOWNLOAD_DELAY = False
+REACTOR_THREADPOOL_MAXSIZE = 100
+RETRY_TIMES = 3
 DEPTH_LIMIT = 10
+
 EXTENSIONS = {
     'scrapy.extensions.telnet.TelnetConsole': None,
     'scrapy.extensions.closespider.CloseSpider': 1
