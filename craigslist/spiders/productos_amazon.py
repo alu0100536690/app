@@ -22,6 +22,7 @@ descripcion = []
 
 # ABSTRACCION DE DATOS A EXTRAER - DETERMINA LOS DATOS QUE TENGO QUE LLENAR Y QUE ESTARAN EN EL ARCHIVO GENERADO
 class DetalleProducto(Item):
+    asins = Field()
     image = Field()
     titulo_producto = Field()
     marca = Field()
@@ -37,6 +38,7 @@ class DetalleProducto(Item):
 class StackOverflowSpider(Spider):
     name = "productos_amazon" # nombre, puede ser cualquiera 
     start_urls = []
+    asins = []
 
 
     def __init__(self, *args, **kwargs):
@@ -44,12 +46,12 @@ class StackOverflowSpider(Spider):
 
         #asins = ["B000MWR59A", "B01ELDCSHY","B07PXTB77V"]
         pais = "es" #España
-        asins = []
+       
         asin = kwargs['asins']
-        asins = re.split(', |,|; |;', asin)
+        self.asins = re.split(', |,|; |;', asin)
 
 
-        for asn in asins:
+        for asn in self.asins:
             # URL SEMILLA
             self.start_urls.append('https://www.amazon.'+pais+'/dp/'+asn)
 
@@ -82,7 +84,7 @@ class StackOverflowSpider(Spider):
 
     
     def quitarsaltolinea(self, texto):
-        nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "")
+        nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "").replace(" valoraciones", "").replace(" de 5 estrellas", "")
         return nuevoTexto
 
     #Funcion que se va a llamar cuando se haga el requerimiento a la URL semilla
@@ -146,7 +148,7 @@ class StackOverflowSpider(Spider):
             item.add_xpath('num_reviews','')
 
         try:
-            item.add_xpath('estrellas', check_exists_by_xpath('.//*[@id="acrPopover"]/@title'))
+            item.add_xpath('estrellas', check_exists_by_xpath('.//*[@id="acrPopover"]/@title'), MapCompose(self.quitarsaltolinea))
         except:
             item.add_xpath('estrellas', '')
 
@@ -205,6 +207,7 @@ class StackOverflowSpider(Spider):
         print("Importando datos...")    
 		
         data = {
+            'asins': self.asins,
             'Imagen': imagen,
             'Marca': marca,
             'Título producto': titulo_producto,
