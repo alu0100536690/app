@@ -48,7 +48,7 @@ class StackOverflowSpider(Spider):
         pais = "es" #España
        
         asin = kwargs['asins']
-        self.asins = re.split(', |,|; |;', asin)
+        self.asins = re.split(', |,|; |;|\n', asin)
 
 
         for asn in self.asins:
@@ -63,20 +63,20 @@ class StackOverflowSpider(Spider):
         },
 
         "USER_AGENTS": [
-            ('Mozilla/5.0 (X11; Linux x86_64) '
-            'AppleWebKit/537.36 (KHTML, like Gecko) '
-            'Chrome/57.0.2987.110 '
-            'Safari/537.36'),  # chrome
-            ('Mozilla/5.0 (X11; Linux x86_64) '
-            'AppleWebKit/537.36 (KHTML, like Gecko) '
-            'Chrome/61.0.3163.79 '
-            'Safari/537.36'),  # chrome
-            ('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) '
-            'Gecko/20100101 '
-            'Firefox/55.0')  # firefox
+            ('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:87.0) Gecko/20100101 Firefox/87.0'),
+            ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'),
+            ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.36 Safari/537.36'),  # chrome
+            ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'),  # chrome
+            ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36')  # firefox
+
+            
         ]
 
     }
+    
+    
+    
+
 
 
     download_delay = 1
