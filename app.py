@@ -40,10 +40,21 @@ def productos_lista_asin():
 @app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
 def descargar_productos_lista_asin():
 	asins = request.form.get("asins")
-	spider_name = "productos_amazon"	    
-	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'asins={asins}'])	
-	return render_template("obtener-datos.html", datos=request.form)
+	pais_tienda = request.form.get("pais_tienda")
+	codigo_afiliado = request.form.get("codigo_afiliado")
+	traducir_texto = request.form.get("traducir_texto")
+	idioma_actual = request.form.get("idioma_actual")
+	paso_idioma_1 = request.form.get("paso_idioma_1")
+	paso_idioma_2 = request.form.get("paso_idioma_2")
 
+	spider_name = "productos_amazon"
+
+	                                                                                                   
+																									                                                                   	    
+	subprocess.check_output(['scrapy', 'crawl', spider_name, '-a', f'asins={asins}', '-a', f'pais_tienda={pais_tienda}', '-a', f'codigo_afiliado={codigo_afiliado}', '-a', f'traducir_texto={traducir_texto}', '-a', f'idioma_actual={idioma_actual}', '-a', f'paso_idioma_1={paso_idioma_1}', '-a', f'paso_idioma_2={paso_idioma_2}'])	
+	return render_template("obtener-datos.html", datos=request.form)
+	#Ejemplo ejecutar araña descargar productos lista asin:
+	#scrapy crawl productos_amazon -a asins="B000MWR59A, B01ELDCSHY" -a pais_tienda="amazon.es" -a codigo_afiliado="bbpromo-21" -a traducir_texto="si" -a idioma_actual="ES" -a paso_idioma_1="US" -a paso_idioma_2="RU" -t json -o productos_amazon.json
 
 @app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
 def serps():

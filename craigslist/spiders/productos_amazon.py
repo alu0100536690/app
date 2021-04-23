@@ -40,20 +40,35 @@ class StackOverflowSpider(Spider):
     start_urls = []
     asins = []
 
+    codigo_afiliado = ""
+    traducir_texto = ""
+    idioma_actual = ""
+    paso_idioma_1 = ""
+    paso_idioma_2 = ""
+
+
+
 
     def __init__(self, *args, **kwargs):
         super(StackOverflowSpider, self).__init__(*args, **kwargs)
 
         #asins = ["B000MWR59A", "B01ELDCSHY","B07PXTB77V"]
-        pais = "es" #España
+        
        
         asin = kwargs['asins']
         self.asins = re.split(', |,|; |;|\n', asin)
 
+        pais_tienda = kwargs['pais_tienda'] #Tienda de amazon, España, USA, etc.
+        self.codigo_afiliado = kwargs['codigo_afiliado']
+        self.traducir_texto = kwargs['traducir_texto']
+        self.idioma_actual = kwargs['idioma_actual']
+        self.paso_idioma_1 = kwargs['paso_idioma_1']
+        self.paso_idioma_2 = kwargs['paso_idioma_2']
+
 
         for asn in self.asins:
             # URL SEMILLA
-            self.start_urls.append('https://www.amazon.'+pais+'/dp/'+asn)
+            self.start_urls.append('https://www.'+pais_tienda+'/dp/'+asn)
 
     custom_settings = {
  
@@ -76,7 +91,7 @@ class StackOverflowSpider(Spider):
     
     
     
-
+    
 
 
     download_delay = 1
@@ -98,6 +113,15 @@ class StackOverflowSpider(Spider):
         global num_reviews
         global estrellas
         global descripcion
+
+
+        
+        #print("asins", self.asins)   
+        #print("codigo_afiliado: ",self.codigo_afiliado)
+        #print("traducir_texto: ",self.traducir_texto)
+        #print("idioma_actual: ",self.idioma_actual)
+        #print("paso_idioma_1: ",self.paso_idioma_1)
+        #print("paso_idioma_2: ",self.paso_idioma_2)
        
 
         # Selectores: Clase de scrapy para extraer datos
@@ -133,7 +157,7 @@ class StackOverflowSpider(Spider):
             item.add_xpath('titulo_producto','')
 
         try:
-            item.add_xpath('precio',check_exists_by_xpath('.//*[@id="priceblock_ourprice"]/text()'), MapCompose(self.quitarsaltolinea))
+            item.add_xpath('precio',check_exists_by_xpath('.//*[@id="priceblock_ourprice" or @id="priceblock_saleprice" or @id="priceblock_dealprice"]//text()'), MapCompose(self.quitarsaltolinea))
         except:
             item.add_xpath('precio','')
 
