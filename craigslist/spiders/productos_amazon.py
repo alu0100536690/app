@@ -139,6 +139,13 @@ class StackOverflowSpider(Spider):
         nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "").replace(" valoraciones", "").replace(" de 5 estrellas", "")
         return nuevoTexto
 
+
+    def limpiarDescripcion(self, texto):
+
+        for t in texto:
+            t = re.sub("\n","",texto) #limpiar texto con expresiones regulares
+        return t
+
     #Funcion que se va a llamar cuando se haga el requerimiento a la URL semilla
     def parse(self, response):
         
@@ -214,7 +221,7 @@ class StackOverflowSpider(Spider):
             item.add_xpath('estrellas', '')
 
         try:
-            item.add_xpath('descripcion', check_exists_by_xpath('.//*[@id="feature-bullets"]//*[@class="a-list-item"]/text()'), MapCompose(self.quitarsaltolinea))
+            item.add_xpath('descripcion', check_exists_by_xpath('.//*[@id="feature-bullets"]//*[@class="a-list-item"]/text()'), MapCompose(self.limpiarDescripcion))
         except:
             item.add_xpath('descripcion', '')
 
@@ -259,13 +266,13 @@ class StackOverflowSpider(Spider):
             estrellas.append("")
 
         try:
-            descripcion.append(item.get_collected_values('descripcion')[0])
-            
+          
+            descripcion.append('\n\n'.join([str(elem) for elem in item.get_collected_values('descripcion')])) #convierto array con varios elementos en array con un único elemento para que se guarde en la misma casilla excel
+            print("\n\n\nDESCRIPCION FORMATEADA ES: ", descripcion[0],"\n\n\n")
             
            
         except:
-            descripcion.append("")        
-        
+            descripcion.append("")
 
         if(self.traducir_texto == "si"): 
             self.translate_text_deepl(descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.idioma_actual, target_lang=self.paso_idioma_1)
@@ -285,7 +292,7 @@ class StackOverflowSpider(Spider):
             'Nún reviews': num_reviews,
             'Estrellas': estrellas,
             'Descripcion': descripcion,
-            'Descripcion traducida': self.translated_descripcion,
+            'Descripcion traducida': self.translated_descripcion
 
         }
 
