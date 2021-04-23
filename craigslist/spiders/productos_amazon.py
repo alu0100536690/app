@@ -10,6 +10,9 @@ import re
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
+import requests
+import json
+
 
 imagen = []
 marca = []
@@ -45,7 +48,7 @@ class StackOverflowSpider(Spider):
     idioma_actual = ""
     paso_idioma_1 = ""
     paso_idioma_2 = ""
-
+    translated_descripcion = []
 
 
 
@@ -96,8 +99,42 @@ class StackOverflowSpider(Spider):
 
     download_delay = 1
 
+    
+
+    def translate_text_deepl(self, data,api_key,src_lang:str="EN",target_lang:str="ES"):
+
+        # Create empty list
+       
+        self.translated_descripcion = []
+        try:
+
+            parameters = {
+            "text": data,
+            "source_lang": src_lang,
+            "target_lang": target_lang,
+            "auth_key": api_key,
+            }
+            response = requests.get("https://api-free.deepl.com/v2/translate", params=parameters)
+            deepl_response_data = response.json()
+
+            for item in deepl_response_data.values():
+                for key in item:
+                    self.translated_descripcion.append(key["text"])
+
+        except json.decoder.JSONDecodeError:
+
+            # Insert error for each line in data
+            for _ in data:
+                self.translated_descripcion.append("Error")
+                print(f"Error translating.. `Error` placed in output dataset")
+
+
+        return self.translated_descripcion
+
 
     
+
+
     def quitarsaltolinea(self, texto):
         nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "").replace(" valoraciones", "").replace(" de 5 estrellas", "")
         return nuevoTexto
@@ -116,12 +153,12 @@ class StackOverflowSpider(Spider):
 
 
         
-        #print("asins", self.asins)   
-        #print("codigo_afiliado: ",self.codigo_afiliado)
-        #print("traducir_texto: ",self.traducir_texto)
-        #print("idioma_actual: ",self.idioma_actual)
-        #print("paso_idioma_1: ",self.paso_idioma_1)
-        #print("paso_idioma_2: ",self.paso_idioma_2)
+        print("asins", self.asins)   
+        print("codigo_afiliado: ",self.codigo_afiliado)
+        print("traducir_texto: ",self.traducir_texto)
+        print("idioma_actual: ",self.idioma_actual)
+        print("paso_idioma_1: ",self.paso_idioma_1)
+        print("paso_idioma_2: ",self.paso_idioma_2)
        
 
         # Selectores: Clase de scrapy para extraer datos
@@ -223,23 +260,32 @@ class StackOverflowSpider(Spider):
 
         try:
             descripcion.append(item.get_collected_values('descripcion')[0])
+            
+            
+           
         except:
             descripcion.append("")        
         
-        
 
-        print("Importando datos...")    
+        if(self.traducir_texto == "si"): 
+            self.translate_text_deepl(descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.idioma_actual, target_lang=self.paso_idioma_1)
+            self.translate_text_deepl(self.translated_descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.paso_idioma_1, target_lang=self.paso_idioma_2)
+            self.translate_text_deepl(self.translated_descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.paso_idioma_2, target_lang=self.idioma_actual)
+            print("\n\n\n\nTraducción: ", self.translated_descripcion,"\n\n\n\n")
+        print("Importando datos...")  
+         
 		
         data = {
             'asins': self.asins,
             'Imagen': imagen,
             'Marca': marca,
-            'Título producto': titulo_producto,
+            'Título producto': titulo_producto,            
             'Precio': precio,
             'Precio caro': precio_caro,
             'Nún reviews': num_reviews,
             'Estrellas': estrellas,
-            'Descripcion': descripcion
+            'Descripcion': descripcion,
+            'Descripcion traducida': self.translated_descripcion,
 
         }
 
