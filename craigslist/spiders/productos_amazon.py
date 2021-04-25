@@ -117,7 +117,11 @@ class StackOverflowSpider(Spider):
 
 
     def quitarsaltolinea(self, texto):
-        nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "").replace(" valoraciones", "").replace(" de 5 estrellas", "")
+        nuevoTexto = texto.replace("\n", "").replace("€", "").replace("[]", "").replace(" de 5 estrellas", "")
+        return nuevoTexto
+
+    def limpiarNum_reviews(self, texto):
+        nuevoTexto = texto.replace("\n", "").replace("[]", "").replace(" valoraciones", "").replace(".", "")
         return nuevoTexto
 
 
@@ -192,7 +196,7 @@ class StackOverflowSpider(Spider):
             item.add_value('precio_caro', '')
 
         try:
-            item.add_xpath('num_reviews',check_exists_by_xpath('.//*[@id="acrCustomerReviewText"]/text()'), MapCompose(self.quitarsaltolinea))
+            item.add_xpath('num_reviews',check_exists_by_xpath('.//*[@id="acrCustomerReviewText"]/text()'), MapCompose(self.limpiarNum_reviews))
         except:
             item.add_xpath('num_reviews','')
 
