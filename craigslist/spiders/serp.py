@@ -174,7 +174,7 @@ class SerpsGoogle(CrawlSpider):
         #print("\n\n LA TABLA ES: ", df)
 
 
-
+#scrapy crawl serp -a busqueda="mejores carritos de bebe" -a num_resultados_serps=10 -a idioma=es -a pais=ES -a motor=google.es
 #con process ejecuto scrapy automáticamente sin escribir -> scrapy crawl .....
 #process = CrawlerProcess()
 #process.crawl(SerpsGoogle)

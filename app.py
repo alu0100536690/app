@@ -37,7 +37,7 @@ def productos_lista_asin():
 
 
 
-@app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
+@app.route("/obtener-datos-productos-amazon", methods=["post"]) 
 def descargar_productos_lista_asin():
 	asins = request.form.get("asins")
 	pais_tienda = request.form.get("pais_tienda")
@@ -56,7 +56,7 @@ def descargar_productos_lista_asin():
 	#Ejemplo ejecutar araña descargar productos lista asin:
 	#scrapy crawl productos_amazon -a asins="B000MWR59A, B01ELDCSHY" -a pais_tienda="amazon.es" -a codigo_afiliado="bbpromo-21" -a traducir_texto="si" -a idioma_actual="ES" -a paso_idioma_1="US" -a paso_idioma_2="RU" -t json -o productos_amazon.json
 
-@app.route("/obtener-datos", methods=["post"]) #Ejecuta la araña y la muestra en la pagina /obtener-datos
+@app.route("/obtener-datos-google", methods=["post"]) 
 def serps():
 	querie = request.form.get("queries")
 	num_serps = request.form.get("num_serps")
