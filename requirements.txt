@@ -24,3 +24,9 @@ Scrapy==1.7.3
 Scrapy-UserAgents==0.0.1
 et-xmlfile==1.0.1
 olefile==0.46
+appdirs==1.4.4
+pyee==8.1.0
+tqdm==4.60.0
+websockets==8.1
+deepl-cli==0.0.14
+pyppeteer==0.2.5

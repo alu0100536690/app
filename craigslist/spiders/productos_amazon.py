@@ -12,6 +12,7 @@ from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
 import requests
 import json
+from deepl import deepl
 
 
 imagen = []
@@ -99,37 +100,17 @@ class StackOverflowSpider(Spider):
 
     download_delay = 1
 
-    
 
-    def translate_text_deepl(self, data,api_key,src_lang:str="EN",target_lang:str="ES"):
-
-        # Create empty list
-       
+    def translate_text_deepl(self, data, idioma1, idioma2):
         self.translated_descripcion = []
-        try:
+        
+        t = deepl.DeepLCLI(langs=(idioma1, idioma2))
+        
+        for texto in data:    
+            self.translated_descripcion.append(t.translate(texto))
+        
+        return self.translated_descripcion 
 
-            parameters = {
-            "text": data,
-            "source_lang": src_lang,
-            "target_lang": target_lang,
-            "auth_key": api_key,
-            }
-            response = requests.get("https://api-free.deepl.com/v2/translate", params=parameters)
-            deepl_response_data = response.json()
-
-            for item in deepl_response_data.values():
-                for key in item:
-                    self.translated_descripcion.append(key["text"])
-
-        except json.decoder.JSONDecodeError:
-
-            # Insert error for each line in data
-            for _ in data:
-                self.translated_descripcion.append("Error")
-                print(f"Error translating.. `Error` placed in output dataset")
-
-
-        return self.translated_descripcion
 
 
     
@@ -274,10 +255,14 @@ class StackOverflowSpider(Spider):
         except:
             descripcion.append("")
 
-        if(self.traducir_texto == "si"): 
-            self.translate_text_deepl(descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.idioma_actual, target_lang=self.paso_idioma_1)
-            self.translate_text_deepl(self.translated_descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.paso_idioma_1, target_lang=self.paso_idioma_2)
-            self.translate_text_deepl(self.translated_descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.paso_idioma_2, target_lang=self.idioma_actual)
+        if(self.traducir_texto == "si"):
+            self.translate_text_deepl(descripcion, self.idioma_actual, self.paso_idioma_1)
+            self.translate_text_deepl(self.translated_descripcion, self.paso_idioma_1, self.paso_idioma_2) 
+            self.translate_text_deepl(self.translated_descripcion, self.paso_idioma_2, self.idioma_actual)
+              
+            #self.translate_text_deepl(descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.idioma_actual, target_lang=self.paso_idioma_1)
+            #self.translate_text_deepl(self.translated_descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.paso_idioma_1, target_lang=self.paso_idioma_2)
+            #self.translate_text_deepl(self.translated_descripcion, "8f63242b-6f86-2229-7f47-a74db99fb508:fx", src_lang=self.paso_idioma_2, target_lang=self.idioma_actual)
             print("\n\n\n\nTraducción: ", self.translated_descripcion,"\n\n\n\n")
         print("Importando datos...")  
          
@@ -306,5 +291,5 @@ class StackOverflowSpider(Spider):
         
       
 # EJECUCION EN TERMINAL:
-# scrapy runspider productos_amazon.py -t csv -o productos_amazon.csv
-#scrapy crawl productos_amazon -t json -o productos_amazon.json
+# scrapy crawl productos_amazon -a asins="B000MWR59A" -a pais_tienda="amazon.es" -a codigo_afiliado="bbpromo-21" -a traducir_texto="si" -a idioma_actual="es" -a paso_idioma_1="en" -a paso_idioma_2="pt" -t json -o productos_amazon.json
+# scrapy crawl productos_amazon -a asins="B000MWR59A" -a pais_tienda="amazon.es" -a codigo_afiliado="bbpromo-21" -a traducir_texto="si" -a idioma_actual="ES" -a paso_idioma_1="EN" -a paso_idioma_2="RU" -t json -o productos_amazon.json
