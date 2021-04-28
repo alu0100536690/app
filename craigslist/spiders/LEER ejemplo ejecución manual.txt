@@ -1,8 +1,0 @@
-#En esta consulta se están buscando 3 términos separados por coma en el buscador de google.
-
-scrapy runspider serp.py -a "busqueda=comida para perros, bicicletas, aprender chino" -a num_resultados_serps=3 -a idioma=es -a pais=ES -a motor=google.es -t json -o serps.json
-
-
-#En esta consulta se buscan 3 productos de Amazon por ASIN
-
-scrapy crawl productos_amazon -a asins="B07KYLFG3C,B07N1H13KV,B081RXLXNX" -t json -o productos_amazon.json
